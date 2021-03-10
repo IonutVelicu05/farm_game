@@ -102,6 +102,8 @@ public class Market : MonoBehaviour
     private List<GameObject> playerOrdersList = new List<GameObject>(); // lista cu orderele plasate de player (din meniu `See Your Orders`);
     private string[] playerOrderPriceList; // lista cu preturile la orderele plasate de player;
     private string[] playerOrderQuantityList; // lista cu cantitatiile la orderele plasate de player;
+    private string[] plantOrderType; //lista cu tipu de planta la orderele plasate de player;;
+    private string[] playerOrderIdList;
     //tomato ;; lista care detine detaliile despre orderele din market de tip tomato
     private string[] tomatoOrderName;
     private string[] tomatoOrderPrice;
@@ -1170,81 +1172,114 @@ public class Market : MonoBehaviour
             Debug.Log("nai bani ba poor");
         }
     }
-    public void TomatoPlayerOrders()
+    public void ShowPlayerOrders()
     {
-        StartCoroutine(TomatoPlayerOrderEnumerator());
+        StartCoroutine(ShowPlayerOrdersEnumerator());
     }
-    IEnumerator TomatoPlayerOrderEnumerator()
+    IEnumerator ShowPlayerOrdersEnumerator()
     {
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 4; i++)
         {
             WWWForm form = new WWWForm();
             form.AddField("whatToPickPO", whatToPickPO);
+            form.AddField("username", MySQL.username);
             if (MySQL.localBuild)
             {
-                WWW www = new WWW("http://localhost/connection/market/playerorderstmt.php", form);
+                WWW www = new WWW("http://localhost/connection/market/playerorderslist.php", form);
                 yield return www;
                 switch (whatToPickPO) //1=price ;; 2=quantity ;; 3=name
                 {
                     case 1:
-                        tomatoPlayerOrderPrice = www.text.Split('\t');
-                        playerOrderPriceList = www.text.Split('\t');
+                        plantOrderType = www.text.Split('\t');
                         whatToPickPO = 2;
                         break;
                     case 2:
-                        tomatoPlayerOrderQuantity = www.text.Split('\t');
-                        playerOrderQuantityList = www.text.Split('\t');
-                        whatToPickPO = 3;
-                        break;
-                    case 3:
-                        eggplantOrderId = www.text.Split('\t');
-                        whatToPickPO = 1;
-                        break;
-                }
-            }
-            else if (MySQL.localBuild == false)
-            {
-                WWW www = new WWW("http://79.118.153.175/connection/market/playerorderstmt_online.php", form);
-                yield return www;
-                switch (whatToPickPO) //1=price ;; 2=quantity ;; 3=name
-                {
-                    case 1:
-                        tomatoPlayerOrderPrice = www.text.Split('\t');
                         playerOrderPriceList = www.text.Split('\t');
-                        whatToPickPO = 2;
-                        break;
-                    case 2:
-                        tomatoPlayerOrderQuantity = www.text.Split('\t');
-                        playerOrderQuantityList = www.text.Split('\t');
                         whatToPickPO = 3;
                         break;
                     case 3:
-                        eggplantOrderId = www.text.Split('\t');
+                        playerOrderQuantityList = www.text.Split('\t');
+                        whatToPickPO = 4;
+                        break;
+                    case 4:
+                        playerOrderIdList = www.text.Split('\t');
                         whatToPickPO = 1;
                         break;
                 }
             }
         }
-        if (orderList.Count > 0)
+        if (playerOrdersList.Count > 0)
         {
-            foreach (GameObject order in orderList)
+            foreach (GameObject order in playerOrdersList)
             {
                 Destroy(order.gameObject);
             }
-            orderList.Clear();
+            playerOrdersList.Clear();
         }
-        if (eggplantOrderName.Length > 0) //daca exista date luate din database sa creeze obiectele order
+        if (playerOrderIdList.Length > 0) //daca exista date luate din database sa creeze obiectele order
         {
-            for (int i = 0; i < eggplantOrderName.Length - 1; i++)
+            for (int i = 0; i < playerOrderIdList.Length - 1; i++)
             {
-                GameObject order = Instantiate(eggplantSellTemplate);
-                order.name = i.ToString();
-                order.SetActive(true);
-                order.GetComponent<EggplantPrefab>().SetPrice("Price: " + eggplantOrderPrice[i]);
-                order.GetComponent<EggplantPrefab>().SetQuantity("Quantity: " + eggplantOrderQuantity[i]);
-                order.GetComponent<EggplantPrefab>().SetName("Seller: " + eggplantOrderName[i]);
-                order.transform.SetParent(eggplantSellTemplate.transform.parent, false);
-                orderList.Add(order);
+                if (plantOrderType[i] == "1")
+                {
+                    GameObject order = Instantiate(tomatoOrderTemplate);
+                    order.name = i.ToString();
+                    order.SetActive(true);
+                    order.GetComponent<TomatoPrefab>().SetPrice("Price: " + playerOrderPriceList[i]);
+                    order.GetComponent<TomatoPrefab>().SetQuantity("Quantity: " + playerOrderQuantityList[i]);
+                    order.transform.SetParent(tomatoOrderTemplate.transform.parent, false);
+                    playerOrdersList.Add(order);
+                }
+                else if (plantOrderType[i] == "2")
+                {
+                    GameObject order = Instantiate(potatoOrderTemplate);
+                    order.name = i.ToString();
+                    order.SetActive(true);
+                    order.GetComponent<PotatoPrefab>().SetPrice("Price: " + playerOrderPriceList[i]);
+                    order.GetComponent<PotatoPrefab>().SetQuantity("Quantity: " + playerOrderQuantityList[i]);
+                    order.transform.SetParent(potatoOrderTemplate.transform.parent, false);
+                    playerOrdersList.Add(order);
+                }
+                else if(plantOrderType[i] == "3")
+                {
+                    GameObject order = Instantiate(cornOrderTemplate);
+                    order.name = i.ToString();
+                    order.SetActive(true);
+                    order.GetComponent<CornPrefab>().SetPrice("Price: " + playerOrderPriceList[i]);
+                    order.GetComponent<CornPrefab>().SetQuantity("Quantity: " + playerOrderQuantityList[i]);
+                    order.transform.SetParent(cornOrderTemplate.transform.parent, false);
+                    playerOrdersList.Add(order);
+                }
+                else if(plantOrderType[i] == "4")
+                {
+                    GameObject order = Instantiate(carrotOrderTemplate);
+                    order.name = i.ToString();
+                    order.SetActive(true);
+                    order.GetComponent<CarrotPrefab>().SetPrice("Price: " + playerOrderPriceList[i]);
+                    order.GetComponent<CarrotPrefab>().SetQuantity("Quantity: " + playerOrderQuantityList[i]);
+                    order.transform.SetParent(carrotOrderTemplate.transform.parent, false);
+                    playerOrdersList.Add(order);
+                }
+                else if(plantOrderType[i] == "5")
+                {
+                    GameObject order = Instantiate(cucumberOrderTemplate);
+                    order.name = i.ToString();
+                    order.SetActive(true);
+                    order.GetComponent<CucumberPrefab>().SetPrice("Price: " + playerOrderPriceList[i]);
+                    order.GetComponent<CucumberPrefab>().SetQuantity("Quantity: " + playerOrderQuantityList[i]);
+                    order.transform.SetParent(cucumberOrderTemplate.transform.parent, false);
+                    playerOrdersList.Add(order);
+                }
+                else if(plantOrderType[i] == "6")
+                {
+                    GameObject order = Instantiate(eggplantOrderTemplate);
+                    order.name = i.ToString();
+                    order.SetActive(true);
+                    order.GetComponent<EggplantPrefab>().SetPrice("Price: " + playerOrderPriceList[i]);
+                    order.GetComponent<EggplantPrefab>().SetQuantity("Quantity: " + playerOrderQuantityList[i]);
+                    order.transform.SetParent(eggplantOrderTemplate.transform.parent, false);
+                    playerOrdersList.Add(order);
+                }
             }
         }
     }
