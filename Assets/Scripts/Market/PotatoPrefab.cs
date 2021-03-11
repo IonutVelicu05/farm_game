@@ -24,16 +24,8 @@ public class PotatoPrefab : MonoBehaviour
     {
         potatoName.text = textString;
     }
-    public string getName()
-    {
-        return potatoName.text;
-    }
     public string getPrice()
     {
         return potatoPrice.text;
-    }
-    public string getQuantity()
-    {
-        return potatoQuantity.text;
     }
 }

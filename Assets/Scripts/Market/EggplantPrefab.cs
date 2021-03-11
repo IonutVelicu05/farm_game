@@ -24,4 +24,8 @@ public class EggplantPrefab : MonoBehaviour
     {
         eggplantName.text = textString;
     }
+    public string getPrice()
+    {
+        return eggplantPrice.text;
+    }
 }

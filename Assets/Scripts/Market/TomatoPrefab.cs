@@ -24,4 +24,8 @@ public class TomatoPrefab : MonoBehaviour
     {
         tomatoName.text = textString;
     }
+    public string getPrice()
+    {
+        return tomatoPrice.text;
+    }
 }

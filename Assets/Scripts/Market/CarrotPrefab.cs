@@ -24,4 +24,8 @@ public class CarrotPrefab : MonoBehaviour
     {
         carrotName.text = textString;
     }
+    public string getPrice()
+    {
+        return carrotPrice.text;
+    }
 }

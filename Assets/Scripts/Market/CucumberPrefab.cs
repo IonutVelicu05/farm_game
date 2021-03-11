@@ -24,4 +24,8 @@ public class CucumberPrefab : MonoBehaviour
     {
         cucumberName.text = textString;
     }
+    public string getPrice()
+    {
+        return cucumberPrice.text;
+    }
 }

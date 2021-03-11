@@ -24,4 +24,8 @@ public class CornPrefab : MonoBehaviour
     {
         cornName.text = textString;
     }
+    public string getPrice()
+    {
+        return cornPrice.text;
+    }
 }
