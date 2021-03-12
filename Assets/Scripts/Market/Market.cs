@@ -95,95 +95,29 @@ public class Market : MonoBehaviour
     private int whatToPick = 1;
     private int whatToPickPO = 1;
     //liste cu orders values
-    private List<GameObject> orderList = new List<GameObject>(); //lista cu orderele (obiectele/butoanele) create
-    private string[] orderPriceList; // lista cu preturile la toate orderele in momentu cand cumperi
-    private string[] orderQuantityList; // lista cu cantitatiile la toate orderele in momentu cand cumperi
-    private string[] orderNameList; // lista cu numele vanzatorilor la toate orderele in momentu cand cumperi
+    private List<GameObject> orderList = new List<GameObject>(); //lista cu orderele (obiectele/butoanele) create pt ce e plasat in shop
     private List<GameObject> playerOrdersList = new List<GameObject>(); // lista cu orderele plasate de player (din meniu `See Your Orders`);
     private string[] playerOrderPriceList; // lista cu preturile la orderele plasate de player;
     private string[] playerOrderQuantityList; // lista cu cantitatiile la orderele plasate de player;
     private string[] plantOrderType; //lista cu tipu de planta la orderele plasate de player;;
     private string[] playerOrderIdList;
-    //tomato ;; lista care detine detaliile despre orderele din market de tip tomato
-    private string[] tomatoOrderName;
-    private string[] tomatoOrderPrice;
-    private string[] tomatoOrderQuantity;
-    private string[] tomatoOrderId;
-    //potato ;; lista care detine detaliile despre orderele din market de tip potato
-    private string[] potatoOrderName;
-    private string[] potatoOrderPrice;
-    private string[] potatoOrderQuantity;
-    private string[] potatoOrderId;
-    //corn ;; lista care detine detaliile despre orderele din market de tip corn
-    private string[] cornOrderName;
-    private string[] cornOrderPrice;
-    private string[] cornOrderQuantity;
-    private string[] cornOrderId;
-    //carrot ;; lista care detine detaliile despre orderele din market de tip carrot
-    private string[] carrotOrderName;
-    private string[] carrotOrderPrice;
-    private string[] carrotOrderQuantity;
-    private string[] carrotOrderId;
-    //cucumber ;; lista care detine detaliile despre orderele din market de tip cucumber
-    private string[] cucumberOrderName;
-    private string[] cucumberOrderPrice;
-    private string[] cucumberOrderQuantity;
-    private string[] cucumberOrderId;
-    //eggplant ;; lista care detine detaliile despre orderele din market de tip eggplant
-    private string[] eggplantOrderName;
-    private string[] eggplantOrderPrice;
-    private string[] eggplantOrderQuantity;
-    private string[] eggplantOrderId;
     //buy confirmation ;; detaliile predate scriptului php pentru a efectua operatiile SQL
-    private string confirmationOrderName;
-    private string confirmationOrderPrice;
-    private string confirmationOrderQuantity;
     private int confirmationOrderId;
-    private int confirmationWhatPlant = 0; //1=rosie ;; 2=potato;; 3=carrot;; 4=corn;; 5=cucumber;; 6=eggplant
-    //delete order from market ;; detaliile predate scriptului php pentru a efectua stergerea din SQL;
-    private string deleteOrderPrice;
-    private int deleteOrderId;
-    private string deleteOrderQuantity;
-    private int whatToDelete = 0; //1=rosie ;; 2=potato;; 3=carrot; 4=corn;; 5=cucumber;; 6=eggplant
-    //tomato ;; lista care detine detaliile despre orderele tip tomato plasate de jucator(daca vrea sa le stearga)
-    private string[] tomatoPlayerOrderName;
-    private string[] tomatoPlayerOrderPrice;
-    private string[] tomatoPlayerOrderQuantity;
-    private string[] tomatoPlayerOrderId;
-    //potato ;; lista care detine detaliile despre orderele tip potato plasate de jucator(daca vrea sa le stearga)
-    private string[] potatoPlayerOrderName;
-    private string[] potatoPlayerOrderPrice;
-    private string[] potatoPlayerOrderQuantity;
-    private string[] potatoPlayerOrderId;
-    //corn ;; lista care detine detaliile despre orderele tip corn plasate de jucator(daca vrea sa le stearga)
-    private string[] cornPlayerOrderName;
-    private string[] cornPlayerOrderPrice;
-    private string[] cornPlayerOrderQuantity;
-    private string[] cornPlayerOrderId;
-    //carrot ;; lista care detine detaliile despre orderele tip carrot plasate de jucator(daca vrea sa le stearga)
-    private string[] carrotPlayerOrderName;
-    private string[] carrotPlayerOrderPrice;
-    private string[] carrotPlayerOrderQuantity;
-    private string[] carrotPlayerOrderId;
-    //cucumber ;; lista care detine detaliile despre orderele tip cucumber plasate de jucator(daca vrea sa le stearga)
-    private string[] cucumberPlayerOrderName;
-    private string[] cucumberPlayerOrderPrice;
-    private string[] cucumberPlayerOrderQuantity;
-    private string[] cucumberPlayerOrderId;
-    //eggplant ;; lista care detine detaliile despre orderele tip eggplant plasate de jucator(daca vrea sa le stearga)
-    private string[] eggplantPlayerOrderName;
-    private string[] eggplantPlayerOrderPrice;
-    private string[] eggplantPlayerOrderQuantity;
-    private string[] eggplantPlayerOrderId;
-    // // // new market ???
-    private string[] marketOrderId;
-    private string[] marketOrderPrice;
-    private string[] marketOrderQuantity;
-    private string[] marketOrderSellerName;
-    private string[] marketOrderPlantType;
-    private int whatPlantsToShow = 0;
-    private int indexMarketVars;
     private int selectedOrderPrice;
+    //delete order from market ;; detaliile predate scriptului php pentru a efectua stergerea din SQL;
+    private int deleteOrderId;
+    // // // new market ???
+    private string[] marketOrderId; // id comenzii (acelasi ca in database);
+    private string[] marketOrderPrice; // pretul la order
+    private string[] marketOrderQuantity; // cantitatea la order
+    private string[] marketOrderSellerName; // numele vanzatorului comenzii respective
+    private string[] marketOrderPlantType;  // tipul de planta al comenzii respective
+    private int whatPlantsToShow = 0; // cand apasa in market pe ce planta vrea sa cumpere,1=rosie;2=potato;3=carrot;4=corn;5=cucumbr;6=eggplant
+    private int lastOrderGot; // indexul ultimului order luat din database;; de la el incepe selectia pentru urmatoarele pagini 
+    [SerializeField]
+    private Text pageNumberTxt;
+    private int pageNumber = 1;
+
 
     public void SwapBuySell()
     {
@@ -207,127 +141,6 @@ public class Market : MonoBehaviour
             btnColors.disabledColor = Color.green;
             buySellbtn.colors = btnColors;
         }
-    }
-    public void SelectTomato()
-    {
-        if (swapBuySell == true)
-        {
-            buyMenu.SetActive(true);
-            tomatoBuyMenu.SetActive(true);
-            //BuyTomato();
-            confirmationWhatPlant = 1;
-            Debug.Log(confirmationWhatPlant);
-        }
-        else if(swapBuySell == false)
-        {
-            sellMenu.SetActive(true);
-            tomatoSellMenu.SetActive(true);
-        }
-    }
-    public void SelectPotato()
-    {
-        if (swapBuySell == true)
-        {
-            buyMenu.SetActive(true);
-            potatoBuyMenu.SetActive(true);
-            //BuyPotato();
-            confirmationWhatPlant = 2;
-            Debug.Log(confirmationWhatPlant);
-
-        }
-        else if (swapBuySell == false)
-        {
-            sellMenu.SetActive(true);
-            potatoSellMenu.SetActive(true);
-        }
-    }
-    public void SelectCarrot()
-    {
-        if (swapBuySell == true)
-        {
-            buyMenu.SetActive(true);
-            carrotBuyMenu.SetActive(true);
-            //BuyCarrot();
-            confirmationWhatPlant = 3;
-            Debug.Log(confirmationWhatPlant);
-        }
-        else if (swapBuySell == false)
-        {
-            sellMenu.SetActive(true);
-            carrotSellMenu.SetActive(true);
-        }
-    }
-    public void SelectCorn()
-    {
-        if (swapBuySell == true)
-        {
-            buyMenu.SetActive(true);
-            cornBuyMenu.SetActive(true);
-           // BuyCorn();
-            confirmationWhatPlant = 4;
-            Debug.Log(confirmationWhatPlant);
-        }
-        else if (swapBuySell == false)
-        {
-            sellMenu.SetActive(true);
-            cornSellMenu.SetActive(true);
-        }
-    }
-    public void SelectCucumber()
-    {
-        if (swapBuySell == true)
-        {
-            buyMenu.SetActive(true);
-            cucumberBuyMenu.SetActive(true);
-            //BuyCucumber();
-            confirmationWhatPlant = 5;
-            Debug.Log(confirmationWhatPlant);
-        }
-        else if (swapBuySell == false)
-        {
-            sellMenu.SetActive(true);
-            cucumberSellMenu.SetActive(true);
-        }
-    }
-    public void SelectEggplant()
-    {
-        if (swapBuySell == true)
-        {
-            buyMenu.SetActive(true);
-            eggplantBuyMenu.SetActive(true);
-            //BuyEggplant();
-            confirmationWhatPlant = 6;
-            Debug.Log(confirmationWhatPlant);
-        }
-        else if (swapBuySell == false)
-        {
-            sellMenu.SetActive(true);
-            eggplantSellMenu.SetActive(true);
-        }
-    }
-    public void SelectTomatoDelete()
-    {
-        whatToDelete = 1;
-    }
-    public void SelectPotatoDelete()
-    {
-        whatToDelete = 2;
-    }
-    public void SelectCornDelete()
-    {
-        whatToDelete = 3;
-    }
-    public void SelectCarrotDelete()
-    {
-        whatToDelete = 4;
-    }
-    public void SelectCucumberDelete()
-    {
-        whatToDelete = 5;
-    }
-    public void SelectEggplantDelete()
-    {
-        whatToDelete = 6;
     }
     public void SellTomatoes()
     {
@@ -600,555 +413,6 @@ public class Market : MonoBehaviour
             }
         }
     }
-    /*
-    public void BuyTomato()
-    {
-        StartCoroutine(BuyTomatoEnumerator());
-    }
-    IEnumerator BuyTomatoEnumerator()
-    {
-        for(int i=0; i < 4; i++)
-        {
-            WWWForm form = new WWWForm();
-            form.AddField("whatToPick", whatToPick);
-            if (MySQL.localBuild == true)
-            {
-                WWW www = new WWW("http://localhost/connection/market/buytomato.php", form);
-                yield return www;
-                switch (whatToPick) //1=price ;; 2=quantity ;; 3=name
-                {
-                    case 1:
-                        tomatoOrderPrice = www.text.Split('\t');
-                        orderPriceList = www.text.Split('\t');
-                        whatToPick = 2;
-                        break;
-                    case 2:
-                        tomatoOrderQuantity = www.text.Split('\t');
-                        orderQuantityList = www.text.Split('\t');
-                        whatToPick = 3;
-                        break;
-                    case 3:
-                        tomatoOrderName = www.text.Split('\t');
-                        orderNameList = www.text.Split('\t');
-                        whatToPick = 4;
-                        break;
-                    case 4:
-                        tomatoOrderId = www.text.Split('\t');
-                        whatToPick = 1;
-                        break;
-                }
-            }
-            else if (MySQL.localBuild == false)
-            {
-                WWW www = new WWW("http://79.118.153.175/connection/market/buytomato_online.php", form);
-                yield return www;
-                switch (whatToPick) //1=price ;; 2=quantity ;; 3=name
-                {
-                    case 1:
-                        tomatoOrderPrice = www.text.Split('\t');
-                        orderPriceList = www.text.Split('\t');
-                        whatToPick = 2;
-                        break;
-                    case 2:
-                        tomatoOrderQuantity = www.text.Split('\t');
-                        orderQuantityList = www.text.Split('\t');
-                        whatToPick = 3;
-                        break;
-                    case 3:
-                        tomatoOrderName = www.text.Split('\t');
-                        orderNameList = www.text.Split('\t');
-                        whatToPick = 4;
-                        break;
-                    case 4:
-                        tomatoOrderId = www.text.Split('\t');
-                        whatToPick = 1;
-                        break;
-                }
-            }
-        }
-        if (orderList.Count > 0)
-        {
-            foreach (GameObject order in orderList)
-            {
-                Destroy(order.gameObject);
-            }
-            orderList.Clear();
-        }
-        if(orderNameList.Length > 0) //daca exista date luate din database sa creeze obiectele order
-        {
-            for (int i = 0; i < tomatoOrderName.Length - 1; i++)
-            {
-                GameObject order = Instantiate(tomatoSellTemplate);
-                order.SetActive(true);
-                order.name = i.ToString();
-                order.GetComponent<TomatoPrefab>().SetPrice("Price: " + tomatoOrderPrice[i]);
-                order.GetComponent<TomatoPrefab>().SetQuantity("Quantity: " + tomatoOrderQuantity[i]);
-                order.GetComponent<TomatoPrefab>().SetName("Seller: " + tomatoOrderName[i]);
-                order.transform.SetParent(tomatoSellTemplate.transform.parent, false);
-                orderList.Add(order);
-            }
-        }
-    }
-    public void BuyPotato()
-    {
-        StartCoroutine(BuyPotatoEnumerator());
-    }
-    IEnumerator BuyPotatoEnumerator()
-    {
-        for (int i = 0; i < 4; i++)
-        {
-            WWWForm form = new WWWForm();
-            form.AddField("whatToPick", whatToPick);
-            if (MySQL.localBuild)
-            {
-                WWW www = new WWW("http://localhost/connection/market/buypotato.php", form);
-                yield return www;
-                switch (whatToPick) //1=price ;; 2=quantity ;; 3=name
-                {
-                    case 1:
-                        potatoOrderPrice = www.text.Split('\t');
-                        orderPriceList = www.text.Split('\t');
-                        whatToPick = 2;
-                        break;
-                    case 2:
-                        potatoOrderQuantity = www.text.Split('\t');
-                        orderQuantityList = www.text.Split('\t');
-                        whatToPick = 3;
-                        break;
-                    case 3:
-                        potatoOrderName = www.text.Split('\t');
-                        orderNameList = www.text.Split('\t');
-                        whatToPick = 4;
-                        break;
-                    case 4:
-                        potatoOrderId = www.text.Split('\t');
-                        whatToPick = 1;
-                        break;
-                }
-            }
-            else if (MySQL.localBuild == false)
-            {
-                WWW www = new WWW("http://79.118.153.175/connection/market/buypotato_online.php", form);
-                yield return www;
-                switch (whatToPick) //1=price ;; 2=quantity ;; 3=name
-                {
-                    case 1:
-                        potatoOrderPrice = www.text.Split('\t');
-                        orderPriceList = www.text.Split('\t');
-                        whatToPick = 2;
-                        break;
-                    case 2:
-                        potatoOrderQuantity = www.text.Split('\t');
-                        orderQuantityList = www.text.Split('\t');
-                        whatToPick = 3;
-                        break;
-                    case 3:
-                        potatoOrderName = www.text.Split('\t');
-                        orderNameList = www.text.Split('\t');
-                        whatToPick = 4;
-                        break;
-                    case 4:
-                        potatoOrderId = www.text.Split('\t');
-                        whatToPick = 1;
-                        break;
-                }
-            }
-        }
-        if (orderList.Count > 0)
-        {
-            foreach (GameObject order in orderList)
-            {
-                Destroy(order.gameObject);
-            }
-            orderList.Clear();
-        }
-        if(potatoOrderName.Length > 0) //daca exista date luate din database sa creeze obiectele order
-        {
-            for (int i = 0; i < potatoOrderName.Length - 1; i++)
-            {
-                GameObject order = Instantiate(potatoSellTemplate);
-                order.SetActive(true);
-                order.name = i.ToString();
-                order.GetComponent<PotatoPrefab>().SetPrice("Price: " + potatoOrderPrice[i]);
-                order.GetComponent<PotatoPrefab>().SetQuantity("Quantity: " + potatoOrderQuantity[i]);
-                order.GetComponent<PotatoPrefab>().SetName("Seller: " + potatoOrderName[i]);
-                order.transform.SetParent(potatoSellTemplate.transform.parent, false);
-                orderList.Add(order);
-            }
-        }
-    }
-    public void BuyCorn()
-    {
-        StartCoroutine(BuyCornEnumerator());
-    }
-    IEnumerator BuyCornEnumerator()
-    {
-        for (int i = 0; i < 4; i++)
-        {
-            WWWForm form = new WWWForm();
-            form.AddField("whatToPick", whatToPick);
-            if (MySQL.localBuild)
-            {
-                WWW www = new WWW("http://localhost/connection/market/buycorn.php", form);
-                yield return www;
-                switch (whatToPick) //1=price ;; 2=quantity ;; 3=name
-                {
-                    case 1:
-                        cornOrderPrice = www.text.Split('\t');
-                        orderPriceList = www.text.Split('\t');
-                        whatToPick = 2;
-                        break;
-                    case 2:
-                        cornOrderQuantity = www.text.Split('\t');
-                        orderQuantityList = www.text.Split('\t');
-                        whatToPick = 3;
-                        break;
-                    case 3:
-                        cornOrderName = www.text.Split('\t');
-                        orderNameList = www.text.Split('\t');
-                        whatToPick = 4;
-                        break;
-                    case 4:
-                        cornOrderId = www.text.Split('\t');
-                        whatToPick = 1;
-                        break;
-                }
-            }
-            else if (MySQL.localBuild == false)
-            {
-                WWW www = new WWW("http://79.118.153.175/connection/market/buycorn_online.php", form);
-                yield return www;
-                switch (whatToPick) //1=price ;; 2=quantity ;; 3=name
-                {
-                    case 1:
-                        cornOrderPrice = www.text.Split('\t');
-                        orderPriceList = www.text.Split('\t');
-                        whatToPick = 2;
-                        break;
-                    case 2:
-                        cornOrderQuantity = www.text.Split('\t');
-                        orderQuantityList = www.text.Split('\t');
-                        whatToPick = 3;
-                        break;
-                    case 3:
-                        cornOrderName = www.text.Split('\t');
-                        orderNameList = www.text.Split('\t');
-                        whatToPick = 4;
-                        break;
-                    case 4:
-                        cornOrderId = www.text.Split('\t');
-                        whatToPick = 1;
-                        break;
-                }
-            }
-        }
-        if (orderList.Count > 0)
-        {
-            foreach (GameObject order in orderList)
-            {
-                Destroy(order.gameObject);
-            }
-            orderList.Clear();
-        }
-        if(cornOrderName.Length > 0) //daca exista date luate din database sa creeze obiectele order
-        {
-            for (int i = 0; i < cornOrderName.Length - 1; i++)
-            {
-                GameObject order = Instantiate(cornSellTemplate);
-                order.SetActive(true);
-                order.name = i.ToString();
-                order.GetComponent<CornPrefab>().SetPrice("Price: " + cornOrderPrice[i]);
-                order.GetComponent<CornPrefab>().SetQuantity("Quantity: " + cornOrderQuantity[i]);
-                order.GetComponent<CornPrefab>().SetName("Seller: " + cornOrderName[i]);
-                order.transform.SetParent(cornSellTemplate.transform.parent, false);
-                orderList.Add(order);
-            }
-        }
-    }
-    public void BuyCarrot()
-    {
-        StartCoroutine(BuyCarrotEnumerator());
-    }
-    IEnumerator BuyCarrotEnumerator()
-    {
-        for (int i = 0; i < 4; i++)
-        {
-            WWWForm form = new WWWForm();
-            form.AddField("whatToPick", whatToPick);
-            if (MySQL.localBuild)
-            {
-                WWW www = new WWW("http://localhost/connection/market/buycarrot.php", form);
-                yield return www;
-                switch (whatToPick) //1=price ;; 2=quantity ;; 3=name
-                {
-                    case 1:
-                        carrotOrderPrice = www.text.Split('\t');
-                        orderPriceList = www.text.Split('\t');
-                        whatToPick = 2;
-                        break;
-                    case 2:
-                        carrotOrderQuantity = www.text.Split('\t');
-                        orderQuantityList = www.text.Split('\t');
-                        whatToPick = 3;
-                        break;
-                    case 3:
-                        carrotOrderName = www.text.Split('\t');
-                        orderNameList = www.text.Split('\t');
-                        whatToPick = 4;
-                        break;
-                    case 4:
-                        carrotOrderId = www.text.Split('\t');
-                        whatToPick = 1;
-                        break;
-                }
-            }
-            else if (MySQL.localBuild == false)
-            {
-                WWW www = new WWW("http://79.118.153.175/connection/market/buycarrot_online.php", form);
-                yield return www;
-                switch (whatToPick) //1=price ;; 2=quantity ;; 3=name
-                {
-                    case 1:
-                        carrotOrderPrice = www.text.Split('\t');
-                        orderPriceList = www.text.Split('\t');
-                        whatToPick = 2;
-                        break;
-                    case 2:
-                        carrotOrderQuantity = www.text.Split('\t');
-                        orderQuantityList = www.text.Split('\t');
-                        whatToPick = 3;
-                        break;
-                    case 3:
-                        carrotOrderName = www.text.Split('\t');
-                        orderNameList = www.text.Split('\t');
-                        whatToPick = 4;
-                        break;
-                    case 4:
-                        carrotOrderId = www.text.Split('\t');
-                        whatToPick = 1;
-                        break;
-                }
-            }
-        }
-        if (orderList.Count > 0)
-        {
-            foreach (GameObject order in orderList)
-            {
-                Destroy(order.gameObject);
-            }
-            orderList.Clear();
-        }
-        if(carrotOrderName.Length > 0) //daca exista date luate din database sa creeze obiectele order
-        {
-            for (int i = 0; i < carrotOrderName.Length - 1; i++)
-            {
-                GameObject order = Instantiate(carrotSellTemplate);
-                order.SetActive(true);
-                order.name = i.ToString();
-                order.GetComponent<CarrotPrefab>().SetPrice("Price: " + carrotOrderPrice[i]);
-                order.GetComponent<CarrotPrefab>().SetQuantity("Quantity: " + carrotOrderQuantity[i]);
-                order.GetComponent<CarrotPrefab>().SetName("Seller: " + carrotOrderName[i]);
-                order.transform.SetParent(carrotSellTemplate.transform.parent, false);
-                orderList.Add(order);
-            }
-        }
-    }
-    public void BuyCucumber()
-    {
-        StartCoroutine(BuyCucumberEnumerator());
-    }
-    IEnumerator BuyCucumberEnumerator()
-    {
-        for (int i = 0; i < 4; i++)
-        {
-            WWWForm form = new WWWForm();
-            form.AddField("whatToPick", whatToPick);
-            if (MySQL.localBuild)
-            {
-                WWW www = new WWW("http://localhost/connection/market/buycucumber.php", form);
-                yield return www;
-                switch (whatToPick) //1=price ;; 2=quantity ;; 3=name
-                {
-                    case 1:
-                        cucumberOrderPrice = www.text.Split('\t');
-                        orderPriceList = www.text.Split('\t');
-                        whatToPick = 2;
-                        break;
-                    case 2:
-                        cucumberOrderQuantity = www.text.Split('\t');
-                        orderQuantityList = www.text.Split('\t');
-                        whatToPick = 3;
-                        break;
-                    case 3:
-                        cucumberOrderName = www.text.Split('\t');
-                        orderNameList = www.text.Split('\t');
-                        whatToPick = 4;
-                        break;
-                    case 4:
-                        cucumberOrderId = www.text.Split('\t');
-                        whatToPick = 1;
-                        break;
-                }
-            }
-            else if (MySQL.localBuild == false)
-            {
-                WWW www = new WWW("http://79.118.153.175/connection/market/buycucumber_online.php", form);
-                yield return www;
-                switch (whatToPick) //1=price ;; 2=quantity ;; 3=name
-                {
-                    case 1:
-                        cucumberOrderPrice = www.text.Split('\t');
-                        orderPriceList = www.text.Split('\t');
-                        whatToPick = 2;
-                        break;
-                    case 2:
-                        cucumberOrderQuantity = www.text.Split('\t');
-                        orderQuantityList = www.text.Split('\t');
-                        whatToPick = 3;
-                        break;
-                    case 3:
-                        cucumberOrderName = www.text.Split('\t');
-                        orderNameList = www.text.Split('\t');
-                        whatToPick = 4;
-                        break;
-                    case 4:
-                        cucumberOrderId = www.text.Split('\t');
-                        whatToPick = 1;
-                        break;
-                }
-            }
-        }
-        if (orderList.Count > 0)
-        {
-            foreach (GameObject order in orderList)
-            {
-                Destroy(order.gameObject);
-            }
-            orderList.Clear();
-        }
-        if(cucumberOrderName.Length > 0) //daca exista date luate din database sa creeze obiectele order
-        {
-            for (int i = 0; i < cucumberOrderName.Length - 1; i++)
-            {
-                GameObject order = Instantiate(cucumberSellTemplate);
-                order.SetActive(true);
-                order.name = i.ToString();
-                order.GetComponent<CucumberPrefab>().SetPrice("Price: " + cucumberOrderPrice[i]);
-                order.GetComponent<CucumberPrefab>().SetQuantity("Quantity: " + cucumberOrderQuantity[i]);
-                order.GetComponent<CucumberPrefab>().SetName("Seller: " + cucumberOrderName[i]);
-                order.transform.SetParent(cucumberSellTemplate.transform.parent, false);
-                orderList.Add(order);
-            }
-        }
-    }
-    public void BuyEggplant()
-    {
-        StartCoroutine(BuyEggplantEnumerator());
-    }
-    IEnumerator BuyEggplantEnumerator()
-    {
-        for (int i = 0; i < 4; i++)
-        {
-            WWWForm form = new WWWForm();
-            form.AddField("whatToPick", whatToPick);
-            if (MySQL.localBuild)
-            {
-                WWW www = new WWW("http://localhost/connection/market/buyeggplant.php", form);
-                yield return www;
-                switch (whatToPick) //1=price ;; 2=quantity ;; 3=name
-                {
-                    case 1:
-                        eggplantOrderPrice = www.text.Split('\t');
-                        orderPriceList = www.text.Split('\t');
-                        whatToPick = 2;
-                        break;
-                    case 2:
-                        eggplantOrderQuantity = www.text.Split('\t');
-                        orderQuantityList = www.text.Split('\t');
-                        whatToPick = 3;
-                        break;
-                    case 3:
-                        eggplantOrderName = www.text.Split('\t');
-                        orderNameList = www.text.Split('\t');
-                        whatToPick = 4;
-                        break;
-                    case 4:
-                        eggplantOrderId = www.text.Split('\t');
-                        whatToPick = 1;
-                        break;
-                }
-            }
-            else if(MySQL.localBuild == false)
-            {
-                WWW www = new WWW("http://79.118.153.175/connection/market/buyeggplant_online.php", form);
-                yield return www;
-                switch (whatToPick) //1=price ;; 2=quantity ;; 3=name
-                {
-                    case 1:
-                        eggplantOrderPrice = www.text.Split('\t');
-                        orderPriceList = www.text.Split('\t');
-                        whatToPick = 2;
-                        break;
-                    case 2:
-                        eggplantOrderQuantity = www.text.Split('\t');
-                        orderQuantityList = www.text.Split('\t');
-                        whatToPick = 3;
-                        break;
-                    case 3:
-                        eggplantOrderName = www.text.Split('\t');
-                        orderNameList = www.text.Split('\t');
-                        whatToPick = 4;
-                        break;
-                    case 4:
-                        eggplantOrderId = www.text.Split('\t');
-                        whatToPick = 1;
-                        break;
-                }
-            }
-        }
-        if (orderList.Count > 0)
-        {
-            foreach (GameObject order in orderList)
-            {
-                Destroy(order.gameObject);
-            }            
-            orderList.Clear();
-        }
-        if(eggplantOrderName.Length > 0) //daca exista date luate din database sa creeze obiectele order
-        {
-            for (int i = 0; i < eggplantOrderName.Length - 1; i++)
-            {
-                GameObject order = Instantiate(eggplantSellTemplate);
-                order.name = i.ToString();
-                order.SetActive(true);
-                order.GetComponent<EggplantPrefab>().SetPrice("Price: " + eggplantOrderPrice[i]);
-                order.GetComponent<EggplantPrefab>().SetQuantity("Quantity: " + eggplantOrderQuantity[i]);
-                order.GetComponent<EggplantPrefab>().SetName("Seller: " + eggplantOrderName[i]);
-                order.transform.SetParent(eggplantSellTemplate.transform.parent, false);
-                orderList.Add(order);
-            }
-        }
-    } 
-
-    //functie care updateaza ecranul shopului ( un refresh la orderele care au ramas in shop )
-    public void updateOrdersAfterBuy()
-    {
-        switch (confirmationWhatPlant)
-        {
-            case 1: BuyTomato();
-                break;
-            case 2: BuyPotato();
-                break;
-            case 3: BuyCarrot();
-                break;
-            case 4: BuyCorn();
-                break;
-            case 5: BuyCucumber();
-                break;
-            case 6: BuyEggplant();
-                break;
-        }
-    } */
     public void ShowMarketTomato()
     {
         if (swapBuySell == true)
@@ -1249,6 +513,12 @@ public class Market : MonoBehaviour
         {
             WWWForm form = new WWWForm();
             form.AddField("whatToPick", whatToPick);
+            form.AddField("pageNumber", pageNumber);
+            if(pageNumber != 1)
+            {
+                form.AddField("whereToStart", marketOrderId[marketOrderId.Length - 1]);
+                form.AddField("whereToStop", marketOrderId.Length + 20);
+            }
             if (MySQL.localBuild)
             {
                 WWW www = new WWW("http://localhost/connection/market/buyfrommarket.php", form);
@@ -1278,6 +548,7 @@ public class Market : MonoBehaviour
                 }
             }
         }
+        Debug.Log("length " + orderList.Count);
         if (orderList.Count > 0)
         {
             foreach (GameObject order in orderList)
@@ -1409,6 +680,7 @@ public class Market : MonoBehaviour
                 MySQL.potatoSeeds = int.Parse(www.text.Split('\t')[9]);
                 MySQL.eggplantSeeds = int.Parse(www.text.Split('\t')[10]);
                 MySQL.newAccount = int.Parse(www.text.Split('\t')[11]);
+                BuyFromMarket();
             }
             else if (MySQL.localBuild = false)
             {
@@ -1425,6 +697,7 @@ public class Market : MonoBehaviour
                 MySQL.potatoSeeds = int.Parse(www.text.Split('\t')[9]);
                 MySQL.eggplantSeeds = int.Parse(www.text.Split('\t')[10]);
                 MySQL.newAccount = int.Parse(www.text.Split('\t')[11]);
+                BuyFromMarket();
             }
         }
         else
@@ -1610,6 +883,41 @@ public class Market : MonoBehaviour
             MySQL.eggplantSeeds = int.Parse(www.text.Split('\t')[10]);
             MySQL.newAccount = int.Parse(www.text.Split('\t')[11]);
             ShowPlayerOrders();
+        }
+    }
+    public void resetPageNumber()
+    {
+        pageNumber = 1;
+    }
+    public void NextPage()
+    {
+        pageNumberTxt.text = (int.Parse(pageNumberTxt.text)+1).ToString();
+        pageNumber++;
+    }
+    public void PreviousPage()
+    {
+        if(int.Parse(pageNumberTxt.text) != 1)
+        {
+            pageNumberTxt.text = (int.Parse(pageNumberTxt.text) - 1).ToString();
+            pageNumber--;
+        }
+    }
+    public void whatPlantNextPage()
+    {
+        switch (whatPlantsToShow)
+        {
+            case 1: ShowMarketTomato();
+                break;
+            case 2: ShowMarketPotato();
+                break;
+            case 3: ShowMarketCarrot();
+                break;
+            case 4: ShowMarketCorn();
+                break;
+            case 5: ShowMarketCucumber();
+                break;
+            case 6: ShowMarketEggplant();
+                break;
         }
     }
 }
