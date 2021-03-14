@@ -96,6 +96,12 @@ public class Market : MonoBehaviour
     private int whatToPickPO = 1;
     //liste cu orders values
     private List<GameObject> orderList = new List<GameObject>(); //lista cu orderele (obiectele/butoanele) create pt ce e plasat in shop
+    private List<GameObject> tomatoMarketList = new List<GameObject>();
+    private List<GameObject> potatoMarketList = new List<GameObject>();
+    private List<GameObject> carrotMarketList = new List<GameObject>();
+    private List<GameObject> cornMarketList = new List<GameObject>();
+    private List<GameObject> cucumberMarketList = new List<GameObject>();
+    private List<GameObject> eggplantMarketList = new List<GameObject>();
     private List<GameObject> playerOrdersList = new List<GameObject>(); // lista cu orderele plasate de player (din meniu `See Your Orders`);
     private string[] playerOrderPriceList; // lista cu preturile la orderele plasate de player;
     private string[] playerOrderQuantityList; // lista cu cantitatiile la orderele plasate de player;
@@ -113,10 +119,11 @@ public class Market : MonoBehaviour
     private string[] marketOrderSellerName; // numele vanzatorului comenzii respective
     private string[] marketOrderPlantType;  // tipul de planta al comenzii respective
     private int whatPlantsToShow = 0; // cand apasa in market pe ce planta vrea sa cumpere,1=rosie;2=potato;3=carrot;4=corn;5=cucumbr;6=eggplant
-    private int lastOrderGot; // indexul ultimului order luat din database;; de la el incepe selectia pentru urmatoarele pagini 
+    private int lastOrderGot = 0; // numarul id-ului ultimului index al listei de obiecte;; de la el incepe selectia pentru urmatoarele pagini 
     [SerializeField]
     private Text pageNumberTxt;
     private int pageNumber = 1;
+    private int lastOrderGotPreviousPage; //numarul de la care incepe selectia din database cand se da PreviousPage();
 
 
     public void SwapBuySell()
@@ -419,8 +426,8 @@ public class Market : MonoBehaviour
         {
             buyMenu.SetActive(true);
             tomatoBuyMenu.SetActive(true);
-            BuyFromMarket();
             whatPlantsToShow = 1;
+            BuyFromMarket();
         }
         else if (swapBuySell == false)
         {
@@ -434,8 +441,8 @@ public class Market : MonoBehaviour
         {
             buyMenu.SetActive(true);
             potatoBuyMenu.SetActive(true);
-            BuyFromMarket();
             whatPlantsToShow = 2;
+            BuyFromMarket();
         }
         else if (swapBuySell == false)
         {
@@ -449,8 +456,8 @@ public class Market : MonoBehaviour
         {
             buyMenu.SetActive(true);
             carrotBuyMenu.SetActive(true);
-            BuyFromMarket();
             whatPlantsToShow = 3;
+            BuyFromMarket();
         }
         else if (swapBuySell == false)
         {
@@ -464,8 +471,8 @@ public class Market : MonoBehaviour
         {
             buyMenu.SetActive(true);
             cornBuyMenu.SetActive(true);
-            BuyFromMarket();
             whatPlantsToShow = 4;
+            BuyFromMarket();
         }
         else if (swapBuySell == false)
         {
@@ -479,8 +486,8 @@ public class Market : MonoBehaviour
         {
             buyMenu.SetActive(true);
             cucumberBuyMenu.SetActive(true);
-            BuyFromMarket();
             whatPlantsToShow = 5;
+            BuyFromMarket();
         }
         else if (swapBuySell == false)
         {
@@ -494,8 +501,8 @@ public class Market : MonoBehaviour
         {
             buyMenu.SetActive(true);
             eggplantBuyMenu.SetActive(true);
-            BuyFromMarket();
             whatPlantsToShow = 6;
+            BuyFromMarket();
         }
         else if (swapBuySell == false)
         {
@@ -509,21 +516,44 @@ public class Market : MonoBehaviour
     }
     IEnumerator BuyFromMarketEnumerator()
     {
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 4; i++)
         {
             WWWForm form = new WWWForm();
+            switch (whatPlantsToShow)
+            {
+                case 1:
+                    form.AddField("plantType", whatPlantsToShow);
+
+                    break;
+                case 2: 
+                    form.AddField("plantType", whatPlantsToShow);
+
+                    break;
+                case 3:
+                    form.AddField("plantType", whatPlantsToShow);
+
+                    break;
+                case 4:
+                    form.AddField("plantType", whatPlantsToShow);
+
+                    break;
+                case 5:
+                    form.AddField("plantType", whatPlantsToShow);
+
+                    break;
+                case 6:
+                    form.AddField("plantType", whatPlantsToShow);
+
+                    break;
+            }
             form.AddField("whatToPick", whatToPick);
             form.AddField("pageNumber", pageNumber);
-            if(pageNumber != 1)
-            {
-                form.AddField("whereToStart", marketOrderId[marketOrderId.Length - 1]);
-                form.AddField("whereToStop", marketOrderId.Length + 20);
-            }
+            form.AddField("whereToStart", lastOrderGot);
             if (MySQL.localBuild)
             {
                 WWW www = new WWW("http://localhost/connection/market/buyfrommarket.php", form);
                 yield return www;
-                switch (whatToPick) //1=price ;; 2=quantity ;; 3=name ;; 4=id ;; 5=planttype;;
+                switch (whatToPick) //1=price ;; 2=quantity ;; 3=name ;; 4=id ;;
                 {
                     case 1:
                         marketOrderPrice = www.text.Split('\t');
@@ -539,29 +569,79 @@ public class Market : MonoBehaviour
                         break;
                     case 4:
                         marketOrderId = www.text.Split('\t');
-                        whatToPick = 5;
-                        break;
-                    case 5:
-                        marketOrderPlantType = www.text.Split('\t');
                         whatToPick = 1;
                         break;
                 }
             }
         }
-        Debug.Log("length " + orderList.Count);
-        if (orderList.Count > 0)
+        switch (whatPlantsToShow) //curata lista de obiecte ca sa arate doar ce e pe pagina respectiva nu si ce era inainte
         {
-            foreach (GameObject order in orderList)
-            {
-                Destroy(order.gameObject);
-            }
-            orderList.Clear();
+            case 1:
+                if (tomatoMarketList.Count > 0)
+                {
+                    foreach (GameObject order in tomatoMarketList)
+                    {
+                        Destroy(order.gameObject);
+                    }
+                    tomatoMarketList.Clear();
+                }
+                break;
+            case 2:
+                if (potatoMarketList.Count > 0)
+                {
+                    foreach (GameObject order in potatoMarketList)
+                    {
+                        Destroy(order.gameObject);
+                    }
+                    potatoMarketList.Clear();
+                }
+                break;
+            case 3:
+                if (carrotMarketList.Count > 0)
+                {
+                    foreach (GameObject order in carrotMarketList)
+                    {
+                        Destroy(order.gameObject);
+                    }
+                    carrotMarketList.Clear();
+                }
+                break;
+            case 4:
+                if (cornMarketList.Count > 0)
+                {
+                    foreach (GameObject order in cornMarketList)
+                    {
+                        Destroy(order.gameObject);
+                    }
+                    cornMarketList.Clear();
+                }
+                break;
+            case 5:
+                if (cucumberMarketList.Count > 0)
+                {
+                    foreach (GameObject order in cucumberMarketList)
+                    {
+                        Destroy(order.gameObject);
+                    }
+                    cucumberMarketList.Clear();
+                }
+                break;
+            case 6:
+                if (eggplantMarketList.Count > 0)
+                {
+                    foreach (GameObject order in eggplantMarketList)
+                    {
+                        Destroy(order.gameObject);
+                    }
+                    eggplantMarketList.Clear();
+                }
+                break;
         }
-        if (marketOrderId.Length > 0) //daca exista date luate din database sa creeze obiectele order
+        if(marketOrderId.Length > 0)
         {
-            for (int i = 0; i < marketOrderId.Length - 1; i++)
+            for(int i = 0; i < marketOrderId.Length - 1; i++)
             {
-                switch (int.Parse(marketOrderPlantType[i]))
+                switch (whatPlantsToShow)
                 {
                     case 1:
                         GameObject tomatoOrder = Instantiate(tomatoSellTemplate);
@@ -571,7 +651,7 @@ public class Market : MonoBehaviour
                         tomatoOrder.GetComponent<TomatoPrefab>().SetQuantity("Quantity: " + marketOrderQuantity[i]);
                         tomatoOrder.GetComponent<TomatoPrefab>().SetName("Name: " + marketOrderSellerName[i]);
                         tomatoOrder.transform.SetParent(tomatoSellTemplate.transform.parent, false);
-                        orderList.Add(tomatoOrder);
+                        tomatoMarketList.Add(tomatoOrder);
                         break;
                     case 2:
                         GameObject potatoOrder = Instantiate(potatoSellTemplate);
@@ -581,7 +661,7 @@ public class Market : MonoBehaviour
                         potatoOrder.GetComponent<PotatoPrefab>().SetQuantity("Quantity: " + marketOrderQuantity[i]);
                         potatoOrder.GetComponent<PotatoPrefab>().SetName("Name: " + marketOrderSellerName[i]);
                         potatoOrder.transform.SetParent(potatoSellTemplate.transform.parent, false);
-                        orderList.Add(potatoOrder);
+                        potatoMarketList.Add(potatoOrder);
                         break;
                     case 3:
                         GameObject carrotOrder = Instantiate(carrotSellTemplate);
@@ -591,7 +671,7 @@ public class Market : MonoBehaviour
                         carrotOrder.GetComponent<CarrotPrefab>().SetQuantity("Quantity: " + marketOrderQuantity[i]);
                         carrotOrder.GetComponent<CarrotPrefab>().SetName("Name: " + marketOrderSellerName[i]);
                         carrotOrder.transform.SetParent(carrotSellTemplate.transform.parent, false);
-                        orderList.Add(carrotOrder);
+                        carrotMarketList.Add(carrotOrder);
                         break;
                     case 4:
                         GameObject cornOrder = Instantiate(cornSellTemplate);
@@ -601,7 +681,7 @@ public class Market : MonoBehaviour
                         cornOrder.GetComponent<CornPrefab>().SetQuantity("Quantity: " + marketOrderQuantity[i]);
                         cornOrder.GetComponent<CornPrefab>().SetName("Name: " + marketOrderSellerName[i]);
                         cornOrder.transform.SetParent(cornSellTemplate.transform.parent, false);
-                        orderList.Add(cornOrder);
+                        cornMarketList.Add(cornOrder);
                         break;
                     case 5:
                         GameObject cucumberOrder = Instantiate(cucumberSellTemplate);
@@ -611,7 +691,7 @@ public class Market : MonoBehaviour
                         cucumberOrder.GetComponent<CucumberPrefab>().SetQuantity("Quantity: " + marketOrderQuantity[i]);
                         cucumberOrder.GetComponent<CucumberPrefab>().SetName("Name: " + marketOrderSellerName[i]);
                         cucumberOrder.transform.SetParent(cucumberSellTemplate.transform.parent, false);
-                        orderList.Add(cucumberOrder);
+                        cucumberMarketList.Add(cucumberOrder);
                         break;
                     case 6:
                         GameObject eggplantOrder = Instantiate(eggplantSellTemplate);
@@ -621,11 +701,62 @@ public class Market : MonoBehaviour
                         eggplantOrder.GetComponent<EggplantPrefab>().SetQuantity("Quantity: " + marketOrderQuantity[i]);
                         eggplantOrder.GetComponent<EggplantPrefab>().SetName("Name: " + marketOrderSellerName[i]);
                         eggplantOrder.transform.SetParent(eggplantSellTemplate.transform.parent, false);
-                        orderList.Add(eggplantOrder);
+                        eggplantMarketList.Add(eggplantOrder);
                         break;
                 }
             }
         }
+    }
+    public void resetPageNumber()
+    {
+        pageNumber = 1;
+    }
+    public void NextPage()
+    {
+        pageNumberTxt.text = (int.Parse(pageNumberTxt.text) + 1).ToString();
+        pageNumber++;
+        switch (whatPlantsToShow)  // de la ce id sa inceapa selectia din database
+        {
+            case 1: 
+                lastOrderGot = int.Parse(tomatoMarketList[tomatoMarketList.Count - 1].name);
+                lastOrderGotPreviousPage = int.Parse(tomatoMarketList[0].name);
+                break;
+            case 2:
+                lastOrderGot = int.Parse(potatoMarketList[potatoMarketList.Count - 1].name);
+                lastOrderGotPreviousPage = int.Parse(potatoMarketList[0].name);
+                break;
+            case 3:
+                lastOrderGot = int.Parse(cornMarketList[cornMarketList.Count - 1].name);
+                lastOrderGotPreviousPage = int.Parse(carrotMarketList[0].name);
+                break;
+            case 4:
+                lastOrderGot = int.Parse(cornMarketList[cornMarketList.Count - 1].name);
+                lastOrderGotPreviousPage = int.Parse(cornMarketList[0].name);
+                break;
+            case 5:
+                lastOrderGot = int.Parse(cucumberMarketList[cucumberMarketList.Count - 1].name);
+                lastOrderGotPreviousPage = int.Parse(cucumberMarketList[0].name);
+                break;
+            case 6:
+                lastOrderGot = int.Parse(eggplantMarketList[eggplantMarketList.Count - 1].name);
+                lastOrderGotPreviousPage = int.Parse(eggplantMarketList[0].name);
+                break;
+        }
+        BuyFromMarket();
+    }
+    public void PreviousPage()
+    {
+        if (int.Parse(pageNumberTxt.text) != 1)
+        {
+            pageNumberTxt.text = (int.Parse(pageNumberTxt.text) - 1).ToString();
+            pageNumber--;
+            lastOrderGot = lastOrderGotPreviousPage - 1;
+        }
+        BuyFromMarket();
+    }
+    public void marketBackButton() // functie care sterge toate obiectele din listele cu plante cand e apsat butonu back
+    {
+
     }
     // functie care preia datele orderului selectat si le stocheaza in variabilele predate scriptului php
     public void getConfirmationDetails()
@@ -883,41 +1014,6 @@ public class Market : MonoBehaviour
             MySQL.eggplantSeeds = int.Parse(www.text.Split('\t')[10]);
             MySQL.newAccount = int.Parse(www.text.Split('\t')[11]);
             ShowPlayerOrders();
-        }
-    }
-    public void resetPageNumber()
-    {
-        pageNumber = 1;
-    }
-    public void NextPage()
-    {
-        pageNumberTxt.text = (int.Parse(pageNumberTxt.text)+1).ToString();
-        pageNumber++;
-    }
-    public void PreviousPage()
-    {
-        if(int.Parse(pageNumberTxt.text) != 1)
-        {
-            pageNumberTxt.text = (int.Parse(pageNumberTxt.text) - 1).ToString();
-            pageNumber--;
-        }
-    }
-    public void whatPlantNextPage()
-    {
-        switch (whatPlantsToShow)
-        {
-            case 1: ShowMarketTomato();
-                break;
-            case 2: ShowMarketPotato();
-                break;
-            case 3: ShowMarketCarrot();
-                break;
-            case 4: ShowMarketCorn();
-                break;
-            case 5: ShowMarketCucumber();
-                break;
-            case 6: ShowMarketEggplant();
-                break;
         }
     }
 }
