@@ -50,6 +50,7 @@ public class PickSoil : MonoBehaviour
     private GameObject[] pamantAles = new GameObject[17];
     private string[] pamantPath = new string[17];
     GameObject eroare;
+
     private Image[] imageOfPlant = new Image[17];
     private Button[] plantButtons = new Button[17];
     private int whatToPick = 1;
@@ -85,10 +86,35 @@ public class PickSoil : MonoBehaviour
     private Sprite lockedSoil;
     [SerializeField]
     private GameObject unlockSoil;
+    [SerializeField]
+    private GameObject unlockSoilError;
 
     public void OnApplicationQuit()
     {
         CallSaveSoils();
+    }
+    private void UnlockSoilScript()
+    {
+        StartCoroutine(UnlockSoilScriptEnumerator());
+    }
+    IEnumerator UnlockSoilScriptEnumerator()
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("soilId", pickedSoil);
+        form.AddField("playerName", MySQL.username);
+        if (MySQL.localBuild)
+        {
+            WWW www = new WWW("http://localhost/connection/unlocksoil.php", form);
+            yield return www;
+            if(www.text == "0")
+            {
+                Debug.Log("a MERS BA UAOWAU");
+            }
+            else
+            {
+                Debug.Log(www.text);   
+            }
+        }
     }
     public void UnlockSoil()
     {
@@ -96,63 +122,171 @@ public class PickSoil : MonoBehaviour
         // php script sa se seteze si in databse pe true
         if (pickedSoil == 5)
         {
-            lacatPamant5.GetComponent<Image>().sprite = null;
-            lacatPamant5.GetComponent<Image>().color = new Color(0, 0, 0, 0.23f);
+            if(MySQL.money >= 50)
+            {
+                lacatPamant5.GetComponent<Image>().sprite = null;
+                lacatPamant5.GetComponent<Image>().color = new Color(0, 0, 0, 0.23f);
+                MySQL.money -= 50;
+                UnlockSoilScript();
+            }
+            else
+            {
+                unlockSoilError.SetActive(true);
+            }
         }
         if (pickedSoil == 6)
         {
-            lacatPamant6.GetComponent<Image>().sprite = null;
-            lacatPamant6.GetComponent<Image>().color = new Color(0, 0, 0, 0.23f);
+            if (MySQL.money >= 50)
+            {
+                lacatPamant6.GetComponent<Image>().sprite = null;
+                lacatPamant6.GetComponent<Image>().color = new Color(0, 0, 0, 0.23f);
+                MySQL.money -= 50;
+                UnlockSoilScript();
+            }
+            else
+            {
+                unlockSoilError.SetActive(true);
+            }
         }
         if (pickedSoil == 7)
         {
-            lacatPamant7.GetComponent<Image>().sprite = null;
-            lacatPamant7.GetComponent<Image>().color = new Color(0, 0, 0, 0.23f);
+            if (MySQL.money >= 50)
+            {
+                lacatPamant7.GetComponent<Image>().sprite = null;
+                lacatPamant7.GetComponent<Image>().color = new Color(0, 0, 0, 0.23f);
+                MySQL.money -= 50;
+                UnlockSoilScript();
+            }
+            else
+            {
+                unlockSoilError.SetActive(true);
+            }
         }
         if (pickedSoil == 8)
         {
-            lacatPamant8.GetComponent<Image>().sprite = null;
-            lacatPamant8.GetComponent<Image>().color = new Color(0, 0, 0, 0.23f);
+            if (MySQL.money >= 50)
+            {
+                lacatPamant8.GetComponent<Image>().sprite = null;
+                lacatPamant8.GetComponent<Image>().color = new Color(0, 0, 0, 0.23f);
+                MySQL.money -= 50;
+                UnlockSoilScript();
+            }
+            else
+            {
+                unlockSoilError.SetActive(true);
+            }
         }
         if (pickedSoil == 9)
         {
-            lacatPamant9.GetComponent<Image>().sprite = null;
-            lacatPamant9.GetComponent<Image>().color = new Color(0, 0, 0, 0.23f);
+            if (MySQL.money >= 50)
+            {
+                lacatPamant9.GetComponent<Image>().sprite = null;
+                lacatPamant9.GetComponent<Image>().color = new Color(0, 0, 0, 0.23f);
+                MySQL.money -= 50;
+                UnlockSoilScript();
+            }
+            else
+            {
+                unlockSoilError.SetActive(true);
+            }
         }
         if (pickedSoil == 10)
         {
-            lacatPamant10.GetComponent<Image>().sprite = null;
-            lacatPamant10.GetComponent<Image>().color = new Color(0, 0, 0, 0.23f);
+            if (MySQL.money >= 50)
+            {
+                lacatPamant10.GetComponent<Image>().sprite = null;
+                lacatPamant10.GetComponent<Image>().color = new Color(0, 0, 0, 0.23f);
+                MySQL.money -= 50;
+                UnlockSoilScript();
+            }
+            else
+            {
+                unlockSoilError.SetActive(true);
+            }
         }
         if (pickedSoil == 11)
         {
-            lacatPamant11.GetComponent<Image>().sprite = null;
-            lacatPamant11.GetComponent<Image>().color = new Color(0, 0, 0, 0.23f);
+            if (MySQL.money >= 50)
+            {
+                lacatPamant11.GetComponent<Image>().sprite = null;
+                lacatPamant11.GetComponent<Image>().color = new Color(0, 0, 0, 0.23f);
+                MySQL.money -= 50;
+                UnlockSoilScript();
+            }
+            else
+            {
+                unlockSoilError.SetActive(true);
+            }
         }
         if (pickedSoil == 12)
         {
-            lacatPamant12.GetComponent<Image>().sprite = null;
-            lacatPamant12.GetComponent<Image>().color = new Color(0, 0, 0, 0.23f);
+            if (MySQL.money >= 50)
+            {
+                lacatPamant12.GetComponent<Image>().sprite = null;
+                lacatPamant12.GetComponent<Image>().color = new Color(0, 0, 0, 0.23f);
+                MySQL.money -= 50;
+                UnlockSoilScript();
+            }
+            else
+            {
+                unlockSoilError.SetActive(true);
+            }
         }
         if (pickedSoil == 13)
         {
-            lacatPamant13.GetComponent<Image>().sprite = null;
-            lacatPamant13.GetComponent<Image>().color = new Color(0, 0, 0, 0.23f);
+            if (MySQL.money >= 50)
+            {
+                lacatPamant13.GetComponent<Image>().sprite = null;
+                lacatPamant13.GetComponent<Image>().color = new Color(0, 0, 0, 0.23f);
+                MySQL.money -= 50;
+                UnlockSoilScript();
+            }
+            else
+            {
+                unlockSoilError.SetActive(true);
+            }
         }
         if (pickedSoil == 14)
         {
-            lacatPamant14.GetComponent<Image>().sprite = null;
-            lacatPamant14.GetComponent<Image>().color = new Color(0, 0, 0, 0.23f);
+            if (MySQL.money >= 50)
+            {
+                lacatPamant14.GetComponent<Image>().sprite = null;
+                lacatPamant14.GetComponent<Image>().color = new Color(0, 0, 0, 0.23f);
+                MySQL.money -= 50;
+                UnlockSoilScript();
+            }
+            else
+            {
+                unlockSoilError.SetActive(true);
+            }
         }
         if (pickedSoil == 15)
         {
-            lacatPamant15.GetComponent<Image>().sprite = null;
-            lacatPamant15.GetComponent<Image>().color = new Color(0, 0, 0, 0.23f);
+            if (MySQL.money >= 50)
+            {
+                lacatPamant15.GetComponent<Image>().sprite = null;
+                lacatPamant15.GetComponent<Image>().color = new Color(0, 0, 0, 0.23f);
+                MySQL.money -= 50;
+                UnlockSoilScript();
+            }
+            else
+            {
+                unlockSoilError.SetActive(true);
+            }
         }
         if (pickedSoil == 16)
         {
-            lacatPamant16.GetComponent<Image>().sprite = null;
-            lacatPamant16.GetComponent<Image>().color = new Color(0, 0, 0, 0.23f);
+            if (MySQL.money >= 50)
+            {
+                lacatPamant16.GetComponent<Image>().sprite = null;
+                lacatPamant16.GetComponent<Image>().color = new Color(0, 0, 0, 0.23f);
+                MySQL.money -= 50;
+                UnlockSoilScript();
+            }
+            else
+            {
+                unlockSoilError.SetActive(true);
+            }
         }
     }
     private void checkUnlockedSoils()
