@@ -31,7 +31,7 @@ public class MainMenu : MonoBehaviour
         }
         else if(MySQL.localBuild == false)
         {
-            WWW www = new WWW("http://79.118.153.175/connection/checkgameversion_online.php");
+            WWW www = new WWW("http://guta-farm.000webhostapp.com/connection/checkgameversion_online.php");
             yield return www;
             if (MySQL.gameVersionInGame != www.text)
             {

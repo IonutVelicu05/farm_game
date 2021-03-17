@@ -182,7 +182,7 @@ public class Market : MonoBehaviour
         }
         else if (MySQL.localBuild == false)
         {
-            WWW www = new WWW("http://79.118.153.175/connection/market/selltomato_online.php", form);
+            WWW www = new WWW("http://guta-farm.000webhostapp.com/connection/market/selltomato_online.php", form);
             yield return www;
             if (www.text == "0")
             {
@@ -227,7 +227,7 @@ public class Market : MonoBehaviour
         }
         else if (MySQL.localBuild == false)
         {
-            WWW www = new WWW("http://79.118.153.175/connection/market/sellpotato_online.php", form);
+            WWW www = new WWW("http://guta-farm.000webhostapp.com/connection/market/sellpotato_online.php", form);
             yield return www;
             if (www.text == "0")
             {
@@ -272,7 +272,7 @@ public class Market : MonoBehaviour
         }
         else if (MySQL.localBuild == false)
         {
-            WWW www = new WWW("http://79.118.153.175/connection/market/sellcorn_online.php", form);
+            WWW www = new WWW("http://guta-farm.000webhostapp.com/connection/market/sellcorn_online.php", form);
             yield return www;
             if (www.text == "0")
             {
@@ -317,7 +317,7 @@ public class Market : MonoBehaviour
         }
         else if (MySQL.localBuild == false)
         {
-            WWW www = new WWW("http://79.118.153.175/connection/market/sellcarrot_online.php", form);
+            WWW www = new WWW("http://guta-farm.000webhostapp.com/connection/market/sellcarrot_online.php", form);
             yield return www;
             if (www.text == "0")
             {
@@ -362,7 +362,7 @@ public class Market : MonoBehaviour
         }
         else if (MySQL.localBuild == false)
         {
-            WWW www = new WWW("http://79.118.153.175/connection/market/sellcucumber_online.php", form);
+            WWW www = new WWW("http://guta-farm.000webhostapp.com/connection/market/sellcucumber_online.php", form);
             yield return www;
             if (www.text == "0")
             {
@@ -408,7 +408,7 @@ public class Market : MonoBehaviour
         }
         else if(MySQL.localBuild == false)
         {
-            WWW www = new WWW("http://79.118.153.175/connection/market/selleggplant_online.php", form);
+            WWW www = new WWW("http://guta-farm.000webhostapp.com/connection/market/selleggplant_online.php", form);
             yield return www;
             if (www.text == "0")
             {
@@ -552,6 +552,30 @@ public class Market : MonoBehaviour
             if (MySQL.localBuild)
             {
                 WWW www = new WWW("http://localhost/connection/market/buyfrommarket.php", form);
+                yield return www;
+                switch (whatToPick) //1=price ;; 2=quantity ;; 3=name ;; 4=id ;;
+                {
+                    case 1:
+                        marketOrderPrice = www.text.Split('\t');
+                        whatToPick = 2;
+                        break;
+                    case 2:
+                        marketOrderQuantity = www.text.Split('\t');
+                        whatToPick = 3;
+                        break;
+                    case 3:
+                        marketOrderSellerName = www.text.Split('\t');
+                        whatToPick = 4;
+                        break;
+                    case 4:
+                        marketOrderId = www.text.Split('\t');
+                        whatToPick = 1;
+                        break;
+                }
+            }
+            else if(MySQL.localBuild == false)
+            {
+                WWW www = new WWW("http://guta-farm.000webhostapp.com/connection/market/buyfrommarket_online.php", form);
                 yield return www;
                 switch (whatToPick) //1=price ;; 2=quantity ;; 3=name ;; 4=id ;;
                 {
@@ -815,7 +839,7 @@ public class Market : MonoBehaviour
             }
             else if (MySQL.localBuild = false)
             {
-                WWW www = new WWW("http://79.118.153.175/connection/market/confirmBuy_online.php", form);
+                WWW www = new WWW("http://guta-farm.000webhostapp.com/connection/market/confirmBuy_online.php", form);
                 yield return www;
                 MySQL.level = int.Parse(www.text.Split('\t')[1]);
                 MySQL.money = int.Parse(www.text.Split('\t')[2]);
@@ -873,7 +897,7 @@ public class Market : MonoBehaviour
             }
             else if(MySQL.localBuild == false)
             {
-                WWW www = new WWW("http://79.118.153.175/connection/market/playerorderslist_online.php", form);
+                WWW www = new WWW("http://guta-farm.000webhostapp.com/connection/market/playerorderslist_online.php", form);
                 yield return www;
                 switch (whatToPickPO) //1=price ;; 2=quantity ;; 3=name ;; 4=orderId ;;
                 {
@@ -1000,7 +1024,7 @@ public class Market : MonoBehaviour
         }
         if (MySQL.localBuild == false)
         {
-            WWW www = new WWW("http://79.118.153.175/connection/market/deleteorder_online.php", form);
+            WWW www = new WWW("http://guta-farm.000webhostapp.com/connection/market/deleteorder_online.php", form);
             yield return www;
             MySQL.level = int.Parse(www.text.Split('\t')[1]);
             MySQL.money = int.Parse(www.text.Split('\t')[2]);

@@ -36,7 +36,7 @@ public class Register : MonoBehaviour
         }
         else if(MySQL.localBuild == false)
         {
-            WWW www = new WWW("http://79.118.153.175/connection/register_online.php", form);
+            WWW www = new WWW("http://guta-farm.000webhostapp.com/connection/register_online.php", form);
             yield return www;
             if (www.text == "0")
             {

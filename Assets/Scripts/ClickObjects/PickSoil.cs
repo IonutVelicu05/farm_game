@@ -56,10 +56,171 @@ public class PickSoil : MonoBehaviour
     private int[] rasamati = new int[17];
     [SerializeField]
     private Button adunaIarba;
+    private bool[] isSoilUnlocked = new bool[17];
+    [SerializeField]
+    private GameObject lacatPamant5;
+    [SerializeField]
+    private GameObject lacatPamant6;
+    [SerializeField]
+    private GameObject lacatPamant7;
+    [SerializeField]
+    private GameObject lacatPamant8;
+    [SerializeField]
+    private GameObject lacatPamant9;
+    [SerializeField]
+    private GameObject lacatPamant10;
+    [SerializeField]
+    private GameObject lacatPamant11;
+    [SerializeField]
+    private GameObject lacatPamant12;
+    [SerializeField]
+    private GameObject lacatPamant13;
+    [SerializeField]
+    private GameObject lacatPamant14;
+    [SerializeField]
+    private GameObject lacatPamant15;
+    [SerializeField]
+    private GameObject lacatPamant16;
+    [SerializeField]
+    private Sprite lockedSoil;
+    [SerializeField]
+    private GameObject unlockSoil;
 
     public void OnApplicationQuit()
     {
         CallSaveSoils();
+    }
+    public void UnlockSoil()
+    {
+        isSoilUnlocked[pickedSoil] = true;
+        // php script sa se seteze si in databse pe true
+        if (pickedSoil == 5)
+        {
+            lacatPamant5.GetComponent<Image>().sprite = null;
+            lacatPamant5.GetComponent<Image>().color = new Color(0, 0, 0, 0.23f);
+        }
+        if (pickedSoil == 6)
+        {
+            lacatPamant6.GetComponent<Image>().sprite = null;
+            lacatPamant6.GetComponent<Image>().color = new Color(0, 0, 0, 0.23f);
+        }
+        if (pickedSoil == 7)
+        {
+            lacatPamant7.GetComponent<Image>().sprite = null;
+            lacatPamant7.GetComponent<Image>().color = new Color(0, 0, 0, 0.23f);
+        }
+        if (pickedSoil == 8)
+        {
+            lacatPamant8.GetComponent<Image>().sprite = null;
+            lacatPamant8.GetComponent<Image>().color = new Color(0, 0, 0, 0.23f);
+        }
+        if (pickedSoil == 9)
+        {
+            lacatPamant9.GetComponent<Image>().sprite = null;
+            lacatPamant9.GetComponent<Image>().color = new Color(0, 0, 0, 0.23f);
+        }
+        if (pickedSoil == 10)
+        {
+            lacatPamant10.GetComponent<Image>().sprite = null;
+            lacatPamant10.GetComponent<Image>().color = new Color(0, 0, 0, 0.23f);
+        }
+        if (pickedSoil == 11)
+        {
+            lacatPamant11.GetComponent<Image>().sprite = null;
+            lacatPamant11.GetComponent<Image>().color = new Color(0, 0, 0, 0.23f);
+        }
+        if (pickedSoil == 12)
+        {
+            lacatPamant12.GetComponent<Image>().sprite = null;
+            lacatPamant12.GetComponent<Image>().color = new Color(0, 0, 0, 0.23f);
+        }
+        if (pickedSoil == 13)
+        {
+            lacatPamant13.GetComponent<Image>().sprite = null;
+            lacatPamant13.GetComponent<Image>().color = new Color(0, 0, 0, 0.23f);
+        }
+        if (pickedSoil == 14)
+        {
+            lacatPamant14.GetComponent<Image>().sprite = null;
+            lacatPamant14.GetComponent<Image>().color = new Color(0, 0, 0, 0.23f);
+        }
+        if (pickedSoil == 15)
+        {
+            lacatPamant15.GetComponent<Image>().sprite = null;
+            lacatPamant15.GetComponent<Image>().color = new Color(0, 0, 0, 0.23f);
+        }
+        if (pickedSoil == 16)
+        {
+            lacatPamant16.GetComponent<Image>().sprite = null;
+            lacatPamant16.GetComponent<Image>().color = new Color(0, 0, 0, 0.23f);
+        }
+    }
+    private void checkUnlockedSoils()
+    {
+        //lacat icon
+        if(isSoilUnlocked[5] == false)
+        {
+            lacatPamant5.GetComponent<Image>().sprite = lockedSoil;
+            lacatPamant5.GetComponent<Image>().color = new Color(0, 0, 0, 0.65f);
+        }
+        if (isSoilUnlocked[6] == false)
+        {
+            lacatPamant6.GetComponent<Image>().sprite = lockedSoil;
+            lacatPamant6.GetComponent<Image>().color = new Color(0, 0, 0, 0.65f);
+        }
+        if (isSoilUnlocked[7] == false)
+        {
+            lacatPamant7.GetComponent<Image>().sprite = lockedSoil;
+            lacatPamant7.GetComponent<Image>().color = new Color(0, 0, 0, 0.65f);
+        }
+        if (isSoilUnlocked[8] == false)
+        {
+            lacatPamant8.GetComponent<Image>().sprite = lockedSoil;
+            lacatPamant8.GetComponent<Image>().color = new Color(0, 0, 0, 0.65f);
+        }
+        if (isSoilUnlocked[9] == false)
+        {
+            lacatPamant9.GetComponent<Image>().sprite = lockedSoil;
+            lacatPamant9.GetComponent<Image>().color = new Color(0, 0, 0, 0.65f);
+        }
+        if (isSoilUnlocked[10] == false)
+        {
+            lacatPamant10.GetComponent<Image>().sprite = lockedSoil;
+            lacatPamant10.GetComponent<Image>().color = new Color(0, 0, 0, 0.65f);
+        }
+        if (isSoilUnlocked[11] == false)
+        {
+            lacatPamant11.GetComponent<Image>().sprite = lockedSoil;
+            lacatPamant11.GetComponent<Image>().color = new Color(0, 0, 0, 0.65f);
+        }
+        if (isSoilUnlocked[12] == false)
+        {
+            lacatPamant12.GetComponent<Image>().sprite = lockedSoil;
+            lacatPamant12.GetComponent<Image>().color = new Color(0, 0, 0, 0.65f);
+        }
+        if (isSoilUnlocked[13] == false)
+        {
+            lacatPamant13.GetComponent<Image>().sprite = lockedSoil;
+            lacatPamant13.GetComponent<Image>().color = new Color(0, 0, 0, 0.65f);
+        }
+        if (isSoilUnlocked[14] == false)
+        {
+            lacatPamant14.GetComponent<Image>().sprite = lockedSoil;
+            lacatPamant14.GetComponent<Image>().color = new Color(0, 0, 0, 0.65f);
+        }
+        if (isSoilUnlocked[15] == false)
+        {
+            lacatPamant15.GetComponent<Image>().sprite = lockedSoil;
+            lacatPamant15.GetComponent<Image>().color = new Color(0, 0, 0, 0.65f);
+        }
+        if (isSoilUnlocked[16] == false)
+        {
+            lacatPamant16.GetComponent<Image>().sprite = lockedSoil;
+            lacatPamant16.GetComponent<Image>().color = new Color(0, 0, 0, 0.65f);
+        }
+
+        //interactable
+
     }
     public void CallLoadSoils()
     {
@@ -68,7 +229,7 @@ public class PickSoil : MonoBehaviour
     }
     IEnumerator LoadPlayerSoil()
     {
-        for (int j = 0; j<17; j++)
+        for (int j = 0; j<8; j++)
         {
             WWWForm form = new WWWForm();
             form.AddField("name", MySQL.username);
@@ -146,12 +307,20 @@ public class PickSoil : MonoBehaviour
                         {
                             int.TryParse(www.text.Split('\t')[i], out MySQL.plantState[i]);
                         }
+                        whatToPick = 7;
+                        break;
+                    case 7:
+                        for(int i=0; i < 17; i++)
+                        {
+                            bool.TryParse(www.text.Split('\t')[i], out isSoilUnlocked[i]);
+                            Debug.Log("i = " + i + " " + isSoilUnlocked[i]);
+                        }
                         break;
                 }
             }
             else if(MySQL.localBuild == false)
             {
-                WWW www = new WWW("http://79.118.153.175/connection/loadsoils_online.php", form);
+                WWW www = new WWW("http://guta-farm.000webhostapp.com/connection/loadsoils_online.php", form);
                 yield return www;
                 switch (whatToPick)
                 {
@@ -253,7 +422,7 @@ public class PickSoil : MonoBehaviour
             }
             else if(MySQL.localBuild == false)
             {
-                WWW www = new WWW("http://79.118.153.175/connection/savesoil_online.php", form);
+                WWW www = new WWW("http://guta-farm.000webhostapp.com/connection/savesoil_online.php", form);
                 yield return www;
             }
             
@@ -287,7 +456,7 @@ public class PickSoil : MonoBehaviour
             }
             else if (MySQL.localBuild == false)
             {
-                WWW www = new WWW("http://79.118.153.175/connection/savesoil_online.php", form);
+                WWW www = new WWW("http://guta-farm.000webhostapp.com/connection/savesoil_online.php", form);
                 yield return www;
             }
 
@@ -446,6 +615,10 @@ public class PickSoil : MonoBehaviour
                 }
             }
         }
+        else if(isSoilUnlocked[pickedSoil] == false)
+        {
+            unlockSoil.SetActive(true);
+        }
         else
         {
             seedMenu.SetActive(true);
@@ -466,6 +639,7 @@ public class PickSoil : MonoBehaviour
 
         }
         LoadGame();
+        checkUnlockedSoils();
     }
     void timerPlantIncrease()
     {

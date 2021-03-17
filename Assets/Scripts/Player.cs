@@ -109,12 +109,12 @@ public class Player : MonoBehaviour
         if (MySQL.localBuild)
         {
             WWW www = new WWW("http://localhost/connection/savedata.php", form);
-            //WWW www = new WWW("http://79.118.153.175/connection/savedata_online.php", form);
+            //WWW www = new WWW("http://guta-farm.000webhostapp.com/connection/savedata_online.php", form);
             yield return www;
         }
         else if(MySQL.localBuild == false)
         {
-            WWW www = new WWW("http://79.118.153.175/connection/savedata_online.php", form);
+            WWW www = new WWW("http://guta-farm.000webhostapp.com/connection/savedata_online.php", form);
             yield return www;
         }
     }
@@ -147,7 +147,7 @@ public class Player : MonoBehaviour
         }
         else if (MySQL.localBuild == false)
         {
-            WWW www = new WWW("http://79.118.153.175/connection/updatestats_online.php", form);
+            WWW www = new WWW("http://guta-farm.000webhostapp.com/connection/updatestats_online.php", form);
             yield return www;
             if (www.text[0] == '0')
             {

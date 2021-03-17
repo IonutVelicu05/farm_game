@@ -25,6 +25,7 @@ public class MySQL
     public static int[] plantState = new int[17];
     public static string gameVersionInGame = "b0.02";
     public static bool localBuild = true;  //true pentru localbuild(sa folosesc eu cu localhost) ;; false pt network build (ip)
+    public static bool[] isSoilLocked = new bool[17];
 
     public static bool loggedIn { get { return username != null; } }
     public static void LogOut()
