@@ -48,8 +48,8 @@ public class Player : MonoBehaviour
     }
     private void Start()
     {
-        InvokeRepeating("CallAutoUpdate", 0f, 2f);
-        InvokeRepeating("CallSaveData", 0f, 10f);
+        InvokeRepeating("CallAutoUpdate", 1f, 5f);
+        InvokeRepeating("CallSaveData", 1f, 10f);
         InvokeRepeating("updateData", 0f, 1f);
         if(MySQL.username == null)
         {
