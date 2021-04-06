@@ -1,10 +1,6 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System.IO;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 using System;
 using TMPro;
 
@@ -16,7 +12,6 @@ public class PickSoil : MonoBehaviour
     public GameObject seedInventory;
     private bool pickPlant = false;
     private bool[] alreadyPlanted = new bool[17]; //daca in slot e deja planta
-    private int[] plantState = new int[17]; // 1=begin // 2=aproape gata(efecte) // 3= state 3// 4=state4 // 5=e gata(imagine floare) // 6=moarta
     private bool[] startTimer = new bool[17]; // 0 = oprit // 1=pornit
     private int[] timerPlantGrow = new int[17]; // timer pentru fiecare slot
     //Ce planta este pe slotu de pamant ->
@@ -27,15 +22,31 @@ public class PickSoil : MonoBehaviour
     [SerializeField]
     private Sprite tomato;
     [SerializeField]
+    private Sprite standardSoil;
+    [SerializeField]
     private Sprite plantBegin;
     [SerializeField]
+    private Sprite plantState2;
+    [SerializeField]
+    private Sprite plantState3;
+    [SerializeField]
+    private Sprite tomatoState4;
+    [SerializeField]
     private Sprite corn;
+    [SerializeField]
+    private Sprite cornState3;
+    [SerializeField]
+    private Sprite cornState4;
     [SerializeField]
     private Sprite carrot;
     [SerializeField]
     private Sprite potato;
     [SerializeField]
     private Sprite cucumber;
+    [SerializeField]
+    private Sprite cucumberState3;
+    [SerializeField]
+    private Sprite cucumberState4;
     [SerializeField]
     private Sprite eggplant;
     private GameObject[] pamantAles = new GameObject[17];
@@ -118,8 +129,7 @@ public class PickSoil : MonoBehaviour
                 if (MySQL.money >= i * 10)
                 {
 
-                    pamantAles[i].GetComponent<Image>().sprite = null;
-                    pamantAles[i].GetComponent<Image>().color = new Color(0f, 0f, 0f, 0.23f);
+                    pamantAles[i].GetComponent<Image>().sprite = standardSoil;
                     MySQL.money -= i * 10;
                     UnlockSoilScript();
                     isSoilUnlocked[i] = true;
@@ -138,13 +148,11 @@ public class PickSoil : MonoBehaviour
             pamantAles[i] = GameObject.Find("CanvasMeniu/pamantPlante/" + i);
             if(isSoilUnlocked[i] == true)
             {
-                pamantAles[i].GetComponent<Image>().sprite = null;
-                pamantAles[i].GetComponent<Image>().color = new Color(0f, 0f, 0f, 0.23f);
+                pamantAles[i].GetComponent<Image>().sprite = standardSoil;
             }
             else if(isSoilUnlocked[i] == false)
             {
                 pamantAles[i].GetComponent<Image>().sprite = lockedSoil;
-                pamantAles[i].GetComponent<Image>().color = new Color(0f, 0f, 0f, 0.65f);
             }
         }
     }
@@ -403,6 +411,7 @@ public class PickSoil : MonoBehaviour
     public void PickPlantButton()
     {
         pickPlant = !pickPlant;
+        Debug.Log(pickPlant);
     }
     public void Harvest()
     {
@@ -412,15 +421,14 @@ public class PickSoil : MonoBehaviour
             {
                 if (i == pickedSoil)
                 {
-                    if (MySQL.plantState[i] == 5 && isPlantDead[i] != true)
+                    if (MySQL.plantState[i] == 5)
                     {
                         pamantAles[i] = GameObject.Find("CanvasMeniu/pamantPlante/" + i);
                         switch (MySQL.whatPlant[i])
                         {
                             case 1:
                                 MySQL.tomatoSeeds++;
-                                pamantAles[i].GetComponent<Image>().sprite = null;
-                                pamantAles[i].GetComponent<Image>().color = new Color(0f, 0f, 0f, .23f);
+                                pamantAles[i].GetComponent<Image>().sprite = standardSoil;
                                 MySQL.isPlanted[i] = false;
                                 MySQL.startTimer[i] = false;
                                 MySQL.timerPlantGrow[i] = 0;
@@ -439,8 +447,7 @@ public class PickSoil : MonoBehaviour
                                 break;
                             case 2:
                                 MySQL.cornSeeds++;
-                                pamantAles[i].GetComponent<Image>().sprite = null;
-                                pamantAles[i].GetComponent<Image>().color = new Color(0f, 0f, 0f, .23f);
+                                pamantAles[i].GetComponent<Image>().sprite = standardSoil;
                                 MySQL.isPlanted[i] = false;
                                 MySQL.startTimer[i] = false;
                                 MySQL.timerPlantGrow[i] = 0;
@@ -459,8 +466,7 @@ public class PickSoil : MonoBehaviour
                                 break;
                             case 3:
                                 MySQL.carrotSeeds++;
-                                pamantAles[i].GetComponent<Image>().sprite = null;
-                                pamantAles[i].GetComponent<Image>().color = new Color(0f, 0f, 0f, .23f);
+                                pamantAles[i].GetComponent<Image>().sprite = standardSoil;
                                 MySQL.isPlanted[i] = false;
                                 MySQL.startTimer[i] = false;
                                 MySQL.timerPlantGrow[i] = 0;
@@ -479,8 +485,7 @@ public class PickSoil : MonoBehaviour
                                 break;
                             case 4:
                                 MySQL.potatoSeeds++;
-                                pamantAles[i].GetComponent<Image>().sprite = null;
-                                pamantAles[i].GetComponent<Image>().color = new Color(0f, 0f, 0f, .23f);
+                                pamantAles[i].GetComponent<Image>().sprite = standardSoil;
                                 MySQL.isPlanted[i] = false;
                                 MySQL.startTimer[i] = false;
                                 MySQL.timerPlantGrow[i] = 0;
@@ -499,8 +504,7 @@ public class PickSoil : MonoBehaviour
                                 break;
                             case 5:
                                 MySQL.cucumberSeeds++;
-                                pamantAles[i].GetComponent<Image>().sprite = null;
-                                pamantAles[i].GetComponent<Image>().color = new Color(0f, 0f, 0f, .23f);
+                                pamantAles[i].GetComponent<Image>().sprite = standardSoil;
                                 MySQL.isPlanted[i] = false;
                                 MySQL.startTimer[i] = false;
                                 MySQL.timerPlantGrow[i] = 0;
@@ -519,8 +523,7 @@ public class PickSoil : MonoBehaviour
                                 break;
                             case 6:
                                 MySQL.eggplantSeeds++;
-                                pamantAles[i].GetComponent<Image>().sprite = null;
-                                pamantAles[i].GetComponent<Image>().color = new Color(0f, 0f, 0f, .23f);
+                                pamantAles[i].GetComponent<Image>().sprite = standardSoil;
                                 MySQL.isPlanted[i] = false;
                                 MySQL.startTimer[i] = false;
                                 MySQL.timerPlantGrow[i] = 0;
@@ -549,8 +552,7 @@ public class PickSoil : MonoBehaviour
                 if(i == pickedSoil)
                 {
                     isPlantDead[i] = false;
-                    pamantAles[i].GetComponent<Image>().sprite = null;
-                    pamantAles[i].GetComponent<Image>().color = new Color(0f, 0f, 0f, .23f);
+                    pamantAles[i].GetComponent<Image>().sprite = standardSoil;
                     needWaterIcons[i].SetActive(false);
                     MySQL.isPlanted[i] = false;
                     MySQL.startTimer[i] = false;
@@ -634,68 +636,57 @@ public class PickSoil : MonoBehaviour
         {
             if(MySQL.startTimer[i] == true) //daca pamantu respectiv are timeru pornit
             {
-                if(isPlantDead[i] != true)
+                if(isPlantDead[i] != true) //daca nu e planta moarta
                 {
-                    if(timerPlantGrow[i] < plantGrowTime)
+                    MySQL.timerPlantGrow[i]++; // cresc timeru cu 1 secunda
+                    if (MySQL.timerPlantGrow[i] > 5 && MySQL.timerPlantGrow[i] < 10)
                     {
-                        plantState[i] = 1;
+                        MySQL.plantState[i] = 2;
                     }
-                    if(timerPlantGrow[i] > 5)
+                    if(MySQL.timerPlantGrow[i] > 10 && MySQL.timerPlantGrow[i] < 15)
                     {
-                        plantState[i] = 2;
+                        MySQL.plantState[i] = 3;
                     }
-                    if(timerPlantGrow[i] > 10)
+                    if(MySQL.timerPlantGrow[i] > 15 && MySQL.timerPlantGrow[i] < plantGrowTime)
                     {
-                        plantState[i] = 3;
+                        MySQL.plantState[i] = 4;
                     }
-                    if(timerPlantGrow[i] > 15)
+                    if(MySQL.timerPlantGrow[i] > plantGrowTime)
                     {
-                        plantState[i] = 4;
-                    }
-                    if(timerPlantGrow[i] > plantGrowTime)
-                    {
-                        plantState[i] = 5;
+                        MySQL.plantState[i] = 5;
                     }
                     switch (MySQL.whatPlant[i])
                     {
                         case 1:
                             pamantAles[i] = GameObject.Find("CanvasMeniu/pamantPlante/" + i);
-                            switch (plantState[i])
+                            switch (MySQL.plantState[i])
                             {
                                 case 1:
-                                    timerPlantGrow[i]++;  //cresc timeru cu 1 secunda
                                     pamantAles[i] = GameObject.Find("CanvasMeniu/pamantPlante/" + i);
                                     pamantAles[i].GetComponent<Image>().sprite = plantBegin;
-                                    pamantAles[i].GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
-                                    MySQL.timerPlantGrow[i]++;
                                     break;
                                 case 2:
-                                    Debug.Log("state 2");
-                                    MySQL.timerPlantGrow[i]++;
+                                    pamantAles[i].GetComponent<Image>().sprite = plantState2;
                                     break;
                                 case 3:
-                                    Debug.Log("state 3");
-                                    MySQL.timerPlantGrow[i]++;
+                                    pamantAles[i].GetComponent<Image>().sprite = plantState3;
                                     break;
                                 case 4:
-                                    Debug.Log("state 4");
-                                    MySQL.timerPlantGrow[i]++;
+                                    pamantAles[i].GetComponent<Image>().sprite = tomatoState4;
                                     break;
                                 case 5:
                                     pamantAles[i].GetComponent<Image>().sprite = tomato;
-                                    pamantAles[i].GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
                                     break;
                             }
                             break;
                         case 2:
                             pamantAles[i] = GameObject.Find("CanvasMeniu/pamantPlante/" + i);
-                            switch (plantState[i])
+                            switch (MySQL.plantState[i])
                             {
                                 case 1:
                                     timerPlantGrow[i]++;  //cresc timeru cu 1 secunda
                                     pamantAles[i] = GameObject.Find("CanvasMeniu/pamantPlante/" + i);
                                     pamantAles[i].GetComponent<Image>().sprite = plantBegin;
-                                    pamantAles[i].GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
                                     MySQL.timerPlantGrow[i]++;
                                     break;
                                 case 2:
@@ -703,28 +694,26 @@ public class PickSoil : MonoBehaviour
                                     MySQL.timerPlantGrow[i]++;
                                     break;
                                 case 3:
-                                    Debug.Log("state 3");
+                                    pamantAles[i].GetComponent<Image>().sprite = cornState3;
                                     MySQL.timerPlantGrow[i]++;
                                     break;
                                 case 4:
-                                    Debug.Log("state 4");
+                                    pamantAles[i].GetComponent<Image>().sprite = cornState4;
                                     MySQL.timerPlantGrow[i]++;
                                     break;
                                 case 5:
-                                    pamantAles[i].GetComponent<Image>().sprite = potato;
-                                    pamantAles[i].GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+                                    pamantAles[i].GetComponent<Image>().sprite = corn;
                                     break;
                             }
                             break;
                         case 3:
                             pamantAles[i] = GameObject.Find("CanvasMeniu/pamantPlante/" + i);
-                            switch (plantState[i])
+                            switch (MySQL.plantState[i])
                             {
                                 case 1:
                                     timerPlantGrow[i]++;  //cresc timeru cu 1 secunda
                                     pamantAles[i] = GameObject.Find("CanvasMeniu/pamantPlante/" + i);
                                     pamantAles[i].GetComponent<Image>().sprite = plantBegin;
-                                    pamantAles[i].GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
                                     MySQL.timerPlantGrow[i]++;
                                     break;
                                 case 2:
@@ -741,19 +730,17 @@ public class PickSoil : MonoBehaviour
                                     break;
                                 case 5:
                                     pamantAles[i].GetComponent<Image>().sprite = carrot;
-                                    pamantAles[i].GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
                                     break;
                             }
                             break;
                         case 4:
                             pamantAles[i] = GameObject.Find("CanvasMeniu/pamantPlante/" + i);
-                            switch (plantState[i])
+                            switch (MySQL.plantState[i])
                             {
                                 case 1:
                                     timerPlantGrow[i]++;  //cresc timeru cu 1 secunda
                                     pamantAles[i] = GameObject.Find("CanvasMeniu/pamantPlante/" + i);
                                     pamantAles[i].GetComponent<Image>().sprite = plantBegin;
-                                    pamantAles[i].GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
                                     MySQL.timerPlantGrow[i]++;
                                     break;
                                 case 2:
@@ -769,20 +756,18 @@ public class PickSoil : MonoBehaviour
                                     MySQL.timerPlantGrow[i]++;
                                     break;
                                 case 5:
-                                    pamantAles[i].GetComponent<Image>().sprite = corn;
-                                    pamantAles[i].GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+                                    pamantAles[i].GetComponent<Image>().sprite = potato;
                                     break;
                             }
                             break;
                         case 5:
                             pamantAles[i] = GameObject.Find("CanvasMeniu/pamantPlante/" + i);
-                            switch (plantState[i])
+                            switch (MySQL.plantState[i])
                             {
                                 case 1:
                                     timerPlantGrow[i]++;  //cresc timeru cu 1 secunda
                                     pamantAles[i] = GameObject.Find("CanvasMeniu/pamantPlante/" + i);
                                     pamantAles[i].GetComponent<Image>().sprite = plantBegin;
-                                    pamantAles[i].GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
                                     MySQL.timerPlantGrow[i]++;
                                     break;
                                 case 2:
@@ -790,28 +775,26 @@ public class PickSoil : MonoBehaviour
                                     MySQL.timerPlantGrow[i]++;
                                     break;
                                 case 3:
-                                    Debug.Log("state 3");
+                                    pamantAles[i].GetComponent<Image>().sprite = cucumberState3;
                                     MySQL.timerPlantGrow[i]++;
                                     break;
                                 case 4:
-                                    Debug.Log("state 4");
+                                    pamantAles[i].GetComponent<Image>().sprite = cucumberState4;
                                     MySQL.timerPlantGrow[i]++;
                                     break;
                                 case 5:
                                     pamantAles[i].GetComponent<Image>().sprite = cucumber;
-                                    pamantAles[i].GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
                                     break;
                             }
                             break;
                         case 6:
                             pamantAles[i] = GameObject.Find("CanvasMeniu/pamantPlante/" + i);
-                            switch (plantState[i])
+                            switch (MySQL.plantState[i])
                             {
                                 case 1:
                                     timerPlantGrow[i]++;  //cresc timeru cu 1 secunda
                                     pamantAles[i] = GameObject.Find("CanvasMeniu/pamantPlante/" + i);
                                     pamantAles[i].GetComponent<Image>().sprite = plantBegin;
-                                    pamantAles[i].GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
                                     MySQL.timerPlantGrow[i]++;
                                     break;
                                 case 2:
@@ -828,7 +811,6 @@ public class PickSoil : MonoBehaviour
                                     break;
                                 case 5:
                                     pamantAles[i].GetComponent<Image>().sprite = eggplant;
-                                    pamantAles[i].GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
                                     break;
                             }
                             break;
@@ -854,8 +836,7 @@ public class PickSoil : MonoBehaviour
                     isPlantDead[i] = true;
                     pamantAles[i] = GameObject.Find("CanvasMeniu/pamantPlante/" + i);
                     pamantAles[i].GetComponent<Image>().sprite = deadPlantImage;
-                    pamantAles[i].GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
-                    plantState[i] = 6;
+                    MySQL.plantState[i] = 6;
                 }
 
             }
@@ -883,7 +864,6 @@ public class PickSoil : MonoBehaviour
                     MySQL.plantState[i] = 1;
                     pamantAles[i] = GameObject.Find("CanvasMeniu/pamantPlante/" + i);
                     pamantAles[i].GetComponent<Image>().sprite = plantBegin;
-                    pamantAles[i].GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
                     pickedSoil = 0;
                 }
                 else
@@ -907,7 +887,6 @@ public class PickSoil : MonoBehaviour
                     MySQL.plantState[i] = 1;
                     pamantAles[i] = GameObject.Find("CanvasMeniu/pamantPlante/" + i);
                     pamantAles[i].GetComponent<Image>().sprite = plantBegin;
-                    pamantAles[i].GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
                     pickedSoil = 0;
                 }
                 else
@@ -931,7 +910,6 @@ public class PickSoil : MonoBehaviour
                     MySQL.plantState[i] = 1;
                     pamantAles[i] = GameObject.Find("CanvasMeniu/pamantPlante/" + i);
                     pamantAles[i].GetComponent<Image>().sprite = plantBegin;
-                    pamantAles[i].GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
                     pickedSoil = 0;
                 }
                 else
@@ -955,7 +933,6 @@ public class PickSoil : MonoBehaviour
                     MySQL.plantState[i] = 1;
                     pamantAles[i] = GameObject.Find("CanvasMeniu/pamantPlante/" + i);
                     pamantAles[i].GetComponent<Image>().sprite = plantBegin;
-                    pamantAles[i].GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
                     pickedSoil = 0;
                 }
                 else
@@ -979,7 +956,6 @@ public class PickSoil : MonoBehaviour
                     MySQL.plantState[i] = 1;
                     pamantAles[i] = GameObject.Find("CanvasMeniu/pamantPlante/" + i);
                     pamantAles[i].GetComponent<Image>().sprite = plantBegin;
-                    pamantAles[i].GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
                     pickedSoil = 0;
                 }
                 else
@@ -1003,7 +979,6 @@ public class PickSoil : MonoBehaviour
                     MySQL.plantState[i] = 1;
                     pamantAles[i] = GameObject.Find("CanvasMeniu/pamantPlante/" + i);
                     pamantAles[i].GetComponent<Image>().sprite = plantBegin;
-                    pamantAles[i].GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
                     pickedSoil = 0;
                 }
                 else

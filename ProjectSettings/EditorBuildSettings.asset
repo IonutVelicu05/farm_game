@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Game.unity
     guid: 4c0dee8615060154dbf45da7f57687e9
+  - enabled: 1
+    path: Assets/Scenes/HanbarVaca.unity
+    guid: fcf5c7125a6fbb547a2e3ade6ee77820
   m_configObjects: {}
